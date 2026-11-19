@@ -86,11 +86,12 @@ module:
       sites:
         matrix:
           languages: ["en"]
-    - source: content/en/cpp-notes
-      target: content/cpp-notes
-      sites:
-        matrix:
-          languages: ["en"]
+    # 注：原先这里还有一条把 content/en/cpp-notes 额外挂到 content/cpp-notes 的挂载，
+    # 已随目录重组删除。现在所有知识点按「语言 → 领域 → 知识点」三级存放：
+    #   content/<语言>/<领域>/<知识点>.md   例：content/en/godot/godot-memory-allocation.md
+    # 每个领域目录天然就是一个 section，上面两条按语言挂载的规则已经覆盖，
+    # 新增领域不需要再改这里（与笔记仓库 <语言>/<领域>/ 目录一一对应，
+    # org 里的 #+hugo_section: <语言>/<领域> 导出后就落在这个位置）。
 # 分页设置。列表页每页显示 10 篇，超出部分生成 /page/2/ 等。
 pagination:
   pagerSize: 10
@@ -140,6 +141,27 @@ params:
   # 若想让速记也出现在首页，把 notes 加进这个列表即可。
   mainSections:
     - posts
+
+  # ---- 知识库（domains）----
+  # 「知识库」页（/domains/）把所有领域栏目列成卡片，页面由主题的
+  # layouts/section/domains.html 渲染，页头文字取自 content/<语言>/domains/_index.md。
+  # 领域 = content/<语言>/ 下的一级目录（如 godot、linux_kernel、freebsd、data_struct），
+  # 新增目录并放入文章后自动出现，不用在这里登记。
+  domains:
+    # 不算「领域」、因此不在知识库页展示的栏目名（即目录名）。
+    #   posts   长文章栏目，有独立入口「文章」
+    #   notes   速记栏目，有独立入口「速记」
+    #   logs    日志聚合页
+    #   about   关于页
+    #   domains 知识库页自己
+    # 不设置这个字段时，主题使用同样的默认值；设置后会整体替换默认值，
+    # 所以以后想排除别的栏目，要把上面这些也一并写全。
+    exclude:
+      - posts
+      - notes
+      - logs
+      - about
+      - domains
 
   # ---- 数学公式（math）----
   # 文章内的 LaTeX 由主题通过 KaTeX 渲染（CSS/JS 走 jsDelivr CDN，见主题
@@ -318,6 +340,13 @@ languages:
           name: 文章
           pageRef: /posts
           weight: 20
+        # 知识库：按「领域」浏览所有学习笔记，pageRef 指向 content/zh-cn/domains/_index.md。
+        # weight 22 让它排在「文章」(20) 与「速记」(25) 之间；
+        # 删掉这一项，导航栏就没有入口，但 /domains/ 页面仍可直接访问。
+        - identifier: domains
+          name: 知识库
+          pageRef: /domains
+          weight: 22
         - identifier: notes
           name: 速记
           pageRef: /notes
@@ -387,6 +416,13 @@ languages:
           name: Posts
           pageRef: /posts
           weight: 20
+        # Knowledge base: browse every study note by domain; pageRef points to
+        # content/en/domains/_index.md. weight 22 puts it between Posts (20) and Notes (25);
+        # removing the item drops the nav entry, but /en/domains/ stays reachable.
+        - identifier: domains
+          name: Knowledge
+          pageRef: /domains
+          weight: 22
         - identifier: notes
           name: Notes
           pageRef: /notes
