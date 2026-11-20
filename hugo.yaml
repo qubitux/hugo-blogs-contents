@@ -205,10 +205,10 @@ params:
   social:
     - name: GitHub
       icon: github
-      url: https://github.com/your-name
+      url: https://github.com/qubitux
     - name: Email
       icon: email
-      url: mailto:hello@example.com
+      url: mailto:qubitbin@gmail.com
 
   # ---- 加载首屏（splash）----
   # 首页顶部占据一整屏的引导区，背景复用站点大图（与首页同一张）。
@@ -319,7 +319,7 @@ languages:
     # 语言级 params，会覆盖顶层 params 的同名键。
     params:
       description: 分享技术、思考与生活
-      author: 你的名字
+      author: voidHalcon
       # 日期格式串，遵循 Go 时间布局：2006=年，1=月，2=日（是占位写法，不是字面量）。
       dateFormat: 2006年1月2日
       tagline: 在代码与生活之间
